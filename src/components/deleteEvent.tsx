@@ -10,10 +10,11 @@ import {
 import { Trash2Icon } from "lucide-react"
 import { Button } from "./ui/button"
 
-export const DeleteEvent = ({deleteEvent, id}:{deleteEvent:(id:string)=> void, id:string}) => {
+export const DeleteEvent = ({ deleteEvent, id }: { deleteEvent: (id: string) => void, id: string }) => {
+
     return (
         <Dialog>
-            <DialogTrigger asChild><Button size={'icon'} variant="destructive">
+            <DialogTrigger><Button size={'icon'} variant="destructive">
                 <Trash2Icon />
             </Button></DialogTrigger>
             <DialogContent>
@@ -25,7 +26,9 @@ export const DeleteEvent = ({deleteEvent, id}:{deleteEvent:(id:string)=> void, i
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter>
-                    <Button type="submit"  onClick={() => deleteEvent(id)}>Confirm</Button>
+                    <Button type="submit" onClick={() => {
+                        deleteEvent(id)
+                    }}>Confirm</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

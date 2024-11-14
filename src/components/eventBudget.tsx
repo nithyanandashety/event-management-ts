@@ -20,6 +20,13 @@ import { Input } from "@/components/ui/input";
 import { Budget } from "@/App";
 import { v4 as uuidv4 } from 'uuid';
 
+export const calculateProfit = (income:Budget[],expense:Budget[]) => {
+ const totalIncome = income.reduce((sum, item) => sum + parseInt(item.amount), 0);
+ const totalExpense = expense.reduce((sum, item) => sum + parseInt(item.amount), 0);
+ return totalIncome - totalExpense;
+};
+
+
 export default function EventBudget({ budget, setBudget, eventId }: { budget: Budget[], setBudget: (val: Budget[]) => void, eventId: string }) {
   const [newDescription, setNewDescription] = useState<string>("");
   const [newAmount, setNewAmount] = useState<string>("");
@@ -72,13 +79,8 @@ export default function EventBudget({ budget, setBudget, eventId }: { budget: Bu
 
   };
 
-  const calculateProfit = () => {
-    const totalIncome = income.reduce((sum, item) => sum + parseInt(item.amount), 0);
-    const totalExpense = expense.reduce((sum, item) => sum + parseInt(item.amount), 0);
-    return totalIncome - totalExpense;
-  };
 
-  const profit = calculateProfit()
+  const profit = calculateProfit(income, expense);
 
   return (
     <Dialog>
@@ -169,4 +171,6 @@ export default function EventBudget({ budget, setBudget, eventId }: { budget: Bu
       </DialogContent>
     </Dialog>
   );
+
 }
+

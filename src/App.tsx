@@ -40,6 +40,15 @@ function App() {
   const [budget, setBudget] = useState<Budget[]>(budgetRetrival() || [])
   const [events, setEvents] = useState<Event[]>(eventRetrival() || []);
 
+  const income = budget.filter(b => b.type === 'income') 
+  const expense =budget.filter(b => b.type === 'expense')
+const totalProfit=()=>{
+  const totalIncome= income.reduce((sum, item) => sum + parseInt(item.amount), 0);
+  const totalExpense= expense.reduce((sum,item)=>sum+parseInt(item.amount),0);
+  return totalIncome-totalExpense
+}
+ const totalProfits=totalProfit();
+
   const saveDataLocalStorage = () => {
     const saveData = {
       events, budget
@@ -97,16 +106,25 @@ function App() {
 
     setFilteredEvents(filteredItems);
   }
+
   return (
     <div>
 
       <h1 className="px-3 font-bold text-left my-4 text-2xl">Event Management</h1>
-      <div className='flex justify-between'>
+      <div className='flex justify-between items-center'>
         <Input value={searchItem} onChange={handleInputChange} className='w-1/2' type="search" placeholder="Search event here..." />
+        <h1 className='font-bold'>Total Events:{events.length}</h1>
+        {(() => {
+            if (totalProfits >= 0)
+              return (<p className="bg-lime-200 font-bold p-3">Total Profit: {totalProfits}$</p>)
+            else
+              return (<p className="bg-red-200 font-bold p-3">Total Profit: {totalProfits}$</p>)
+          })()}
+
         <CreateEvents addEventData={addEvent} />
       </div>
-      <div className='grid md:grid-cols-2 gap-4 m-4'>{filteredEvents.map((event, index) => {
-        return <Card deleteEvent={deleteEvent} editEvents={editEvents} key={index} event={event} budget={budget} setBudget={setBudget} />
+      <div className='grid md:grid-cols-2 gap-4 m-4'>{filteredEvents.map((event) => {
+        return <Card deleteEvent={deleteEvent} editEvents={editEvents} key={event.id} event={event} budget={budget} setBudget={setBudget} />
       })}</div>
     </div>
 
