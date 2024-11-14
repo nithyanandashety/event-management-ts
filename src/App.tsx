@@ -60,6 +60,16 @@ function App() {
     setEvents(updated);
   }
 
+  const deleteEvent =(id:string)=> {
+    const updated = events.filter(e => e.id !== id);
+    const updatedBudget = budget.filter(bu => bu.eventId!==id)
+    
+    setFilteredEvents(updated);
+    setEvents(updated);
+
+    setBudget(updatedBudget);
+  }
+
   const editEvents = (data: Event) => {
     const updated = events.map(e => {
       if (e.id === data.id) {
@@ -96,7 +106,7 @@ function App() {
         <CreateEvents addEventData={addEvent} />
       </div>
       <div className='grid md:grid-cols-2 gap-4 m-4'>{filteredEvents.map((event, index) => {
-        return <Card editEvents={editEvents} key={index} event={event} budget={budget} setBudget={setBudget} />
+        return <Card deleteEvent={deleteEvent} editEvents={editEvents} key={index} event={event} budget={budget} setBudget={setBudget} />
       })}</div>
     </div>
 
